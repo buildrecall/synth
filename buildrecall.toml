@@ -15,6 +15,7 @@ cargo clippy --tests --all-targets -- -D warnings
 [jobs.fmt]
 run = '''
 cargo fmt --all -- --check
+
 '''
 
 [containers.linux]
