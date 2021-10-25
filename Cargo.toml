@@ -8,3 +8,7 @@ members = [
 
 # blocked by diesel error for now.
 #resolver = "2"
+
+[patch.crates-io]
+# fix linux->windows cross-compilation
+blake3 = { git = 'https://github.com/EmbarkStudios/BLAKE3' }

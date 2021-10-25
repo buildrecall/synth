@@ -7,6 +7,13 @@ rustup show
 cargo +nightly test
 '''
 
+[jobs.test-windows]
+run = '''
+rustup target add x86_64-pc-windows-msvc
+# run tests using wine
+cargo test --target x86_64-pc-windows-msvc
+'''
+
 [jobs.clippy]
 run = '''
 cargo clippy --tests --all-targets -- -D warnings
@@ -19,6 +26,15 @@ cargo fmt --all -- --check
 
 [containers.linux]
 image = "rust:1"
+persist = [
+    "/usr/local/cargo/registry",
+    "/usr/local/cargo/git",
+    # persist the nightly rust toolchain so it is not re-installed every build
+    "/usr/local/rustup",
+]
+
+[containers.windows-cross]
+image = "buildrecall/windows-cross"
 persist = [
     "/usr/local/cargo/registry",
     "/usr/local/cargo/git",

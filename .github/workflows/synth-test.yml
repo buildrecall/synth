@@ -12,14 +12,13 @@ on:
 
 jobs:
   cargo_test:
-    runs-on: ${{ matrix.os }}
+    runs-on: "ubuntu-latest"
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2
       - name: Download brr
-        if: matrix.os == 'ubuntu-latest'
         env:
           TAG: 0.0.21
         run: |
@@ -32,12 +31,9 @@ jobs:
           BUILDRECALL_API_KEY: ${{ secrets.BUILDRECALL_API_KEY }}
         run: brr run test linux
       - if: matrix.os == 'windows-latest'
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
-      - if: matrix.os == 'windows-latest'
-        run: cargo test
+        env:
+          BUILDRECALL_API_KEY: ${{ secrets.BUILDRECALL_API_KEY }}
+        run: brr run test-windows windows-cross
   clippy_test:
     runs-on: ubuntu-latest
     steps:
